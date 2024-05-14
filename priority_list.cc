@@ -55,12 +55,23 @@ int prio_list_impl<T>::add(T *i, int p)
         head = t;
         tail = t;
     } else {
-        if (p < head->item.priority) {
+        priority_list<T> *it, *it_o;
+
+        it = it_o = head;
+
+        if (it->item.priority > p) {
             t->next = head;
             head = t;
         } else {
-            tail->next = t;
-            tail = t;
+            while (it) {
+                if (it->item.priority > p) {
+                    it_o->next = t;
+                    t->next = it;
+                    break;
+                }
+                it_o = it;
+                it = it->next;
+            }
         }
     }
 
@@ -77,15 +88,18 @@ void prio_list_impl<T>::print()
     }
 }
 
+
 int main()
 {
-    int a[10] = {9, 1, 2, 3, 4};
+    int a[10] = {9, 1, 2, 3, 10, 12, 4};
     prio_list_impl<int> p;
 
-    p.add(&a[0], 2);
-    p.add(&a[1], 3);
-    p.add(&a[2], 1);
-    p.add(&a[3], 10);
+    p.add(&a[0], 10);
+    p.add(&a[1], 1);
+    p.add(&a[2], 2);
+    p.add(&a[3], 3);
+    p.add(&a[4], 6);
+    p.add(&a[5], 5);
 
     p.print();
 
