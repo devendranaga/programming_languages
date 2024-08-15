@@ -67,6 +67,8 @@ print("true is : "..type(true))
 print("nil is : "..type(nil))
 ```
 
+boolean types are `true` and `false`.
+
 ## command line args
 
 command line args are in global variable `arg`. To know the number of command line args, use `#arg`.
@@ -148,5 +150,69 @@ print(math.random(1, 100))
 print(math.random())
 ```
 
+## Lua and C integrations
+
+For C integration we need to use the following Lua APIs exposed in C.
+
+| S.No | Name | Description |
+|------|------|-------------|
+| 1 | `lua_tonumber` | converts input string to number |
+| 2 | `lua_pushnumber` | writes back result |
+| 3 | `luaL_Reg` | data structure that is used to register C functions to lua |
+| 4 | `luaopen_mylib` | auto called by the lua interpreter from the lua script |
+| 5 | `lua_State` | contains all the information from the lua |
+| 6 | `luaL_newlib` | register a new lua library data structures |
+
+The function `luaopen_mylib` returns 1.
+
+The exposed function must have the prototype as follows.
+
+```c
+int (*function)(lua_State *L);
+```
+
+The exposed function must return number of arguments written via `lua_pushnumber` or other methods.
+
+```c
+#include <stdio.h>
+#include <math.h>
+#include <lua5.4/lua.h>
+#include <lua5.4/lualib.h>
+#include <lua5.4/lauxlib.h>
+
+static int l_sin(lua_State *L) {
+    double d = lua_tonumber(L, 1);
+    lua_pushnumber(L, sin(d));
+    return 1;
+}
+
+static const struct luaL_Reg mylib[] = {
+    {"l_sin", l_sin},
+    {NULL, NULL},
+};
+
+int luaopen_mylib(lua_State *L) {
+    luaL_newlib(L, mylib);
+    return 1;
+}
+```
+compile the above program as follows.
+
+```bash
+gcc lua_intf.c -shared -o mylib.so -fPIC -llua5.4
+```
+
+Generates a `.so` file.
+
+This exposes function `l_sin` to the lua. Lua loads the `.so` file with `require` attribute.
+
+Below is a sample lua script.
+
+```lua
+mylib = require 'mylib'
+print(mylib.l_sin(90))
+```
+
+Keep both lua and the .so files in the same path.
 
 
