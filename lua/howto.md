@@ -29,6 +29,8 @@ The operator `..` is used for concatenation or printing.
 
 Comments in lua are started with `--`. Multiline comments start with `--[[` and end with `--]]`.
 
+Any local variables are named with `local`. All global variables have no markation.
+
 ## identifiers in Lua
 
 | S.No | Identifier name |
@@ -104,4 +106,47 @@ while (i <= #names) do
     i = i + 1
 end
 ```
+
+
+### repeat loop
+
+`repeat` is followed by `until` statement.
+
+A simple example is as follows.
+
+```lua
+repeat
+	print("enter number\n")
+
+	guess = io.read()
+
+until tonumber(guess) == 4
+
+print("entered number is 4 and closing the loop\n")
+```
+
+## Math library
+
+### Random number generation
+
+`math.randomseed` seeds the random number generator.
+
+`math.random` is overloaded.
+
+1. `math.random()` - takes no number and generates a random number.
+2. `math.random(n)` - takes one argument to generate random number between 1 and n.
+3. `math.random(n, m)` - takes two arguments between n and m.
+
+Below is a sample program.
+
+```lua
+#!/usr/bin/lua
+
+math.randomseed(os.time())
+print(math.random(10))
+print(math.random(1, 100))
+print(math.random())
+```
+
+
 
