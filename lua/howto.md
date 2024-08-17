@@ -83,7 +83,19 @@ end
 
 ## Loops
 
+Loop index never is 0, its always starts from 1.
+
 ### for loops
+
+Looping over ranges:
+
+```lua
+for i = 1, 10, 1 do
+    print(i)
+end
+```
+
+The first argument is initializer, second argument is the conditional and the last argument is the counter.
 
 A simple for loop iterator over strings is as follows.
 
