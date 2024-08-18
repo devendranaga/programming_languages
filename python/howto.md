@@ -1,5 +1,40 @@
 # Learning Python Cheat sheet
 
+## Extending Python with C
+
+```c
+#include <python3.10/Python.h>
+#include <stdio.h>
+
+PyObject *add(PyObject *self, PyObject *args)
+{
+    double x;
+    double y;
+    PyArg_ParseTuple(args, "dd", &x, &y);
+    return PyFloat_FromDouble(x + y);
+}
+
+static PyMethodDef methods[] = {
+    {"add", add, METH_VARARGS, "Adds two numbers"},
+    {NULL, NULL, 0, NULL},
+};
+
+static struct PyModuleDef abc123 = {
+    PyModuleDef_HEAD_INIT,
+    "abc123",
+    "This is a module named abc123",
+    -1,
+    methods
+};
+
+PyMODINIT_FUNC PyInit_abc123() {
+    printf("Hello World\n");
+    return PyModule_Create(&abc123);
+}
+```
+
+compile with `gcc file.c -shared -fPIC -o abc123.so`.
+
 ## Scope of the variable in python
 
 ```python
