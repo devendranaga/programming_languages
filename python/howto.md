@@ -64,3 +64,36 @@ def test_1():
 test_1()
 print("global val ", str(i))
 ```
+
+### Python input
+
+```python
+#!/usr/bin/python
+
+if __name__ == "__main__":
+    input_str = input("enter something")
+    print(input_str)
+
+```
+
+When run as a script, the starting point can be put within the conditional `if __name__ == "__main__"`. Lets us test the code module wise.
+
+Allows modularization of the code.
+
+
+### Annotations
+
+```python
+#!/usr/bin/python
+
+def get_hash(r:'input value') -> 'hash':
+    return r * r * 2;
+
+print(get_hash.__annotations__)
+
+```
+
+The arrow notation mentions return type.
+
+anything followed by the `:` for the variable mean it is an annotation.
+
